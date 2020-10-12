@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todoアプリ</title>
+    <script>
+
+        let cards = [
+            {no:1,content:"テストタスク",person:"山田"},
+            {no:2,content:"テストタスク2",person:"佐藤"},
+        ];
+
+        function init() {
+            let cardtable = document.getElementById("cardtable");
+            
+            
+            cards.forEach(card => {
+                let tablerow = document.createElement("tr");
+                for (let key in card) {
+                    let td = document.createElement("td");
+                    td.textContent = card[key];
+                    tablerow.appendChild(td);
+                }
+                let td = document.createElement("td");
+                let donebutton = document.createElement("button");
+                donebutton.textContent = "完了"
+                donebutton.setAttribute("onclick","countUp()");
+                td.appendChild(donebutton);
+                tablerow.appendChild(td);
+                cardtable.appendChild(tablerow);
+            });
+        }
+        window.onload = init;
+
+        let count = 0
+        function countUp() {
+            count += 1;
+            document.getElementById("DoneCount").textContent = count
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Todoアプリ</h1>
+    <div>終わらせた回数：<strong id=DoneCount>0</strong>回</div>
+    <table border="1">
+        <thead>
+            <th>No</th><th>仕事内容</th><th>担当</th><th>完了</th>
+        </thead>
+        <tbody id="cardtable">
+
+        </tbody>
+    </table>
+</body>
+</html>
