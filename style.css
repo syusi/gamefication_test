@@ -1,0 +1,16 @@
+:root {
+    --primary-color: #2196F3;
+    --secondary-color: #1976D2;
+    --thard-color: #EF5350;
+}
+
+.header{
+    background-color: var(--primary-color);
+}
+
+/* body {
+    background-color: var(--thard-color);
+} */
+/* .card {
+    background-color: var(--primary-color);
+} */
