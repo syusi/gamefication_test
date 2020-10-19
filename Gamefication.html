@@ -36,14 +36,20 @@
         let count = 0
         function countUp() {
             count += 1;
-            document.getElementById("DoneCount").textContent = count
+            expMater = document.getElementById("exp");
+            expMater.value += 1
+            if(expMater.value >= expMater.max){
+                expMater.max += 10;
+                expMater.value = 0;
+            }
         }
 
     </script>
 </head>
 <body>
     <h1>Todoアプリ</h1>
-    <div>終わらせた回数：<strong id=DoneCount>0</strong>回</div>
+    <label for="exp"></label>
+    <meter id="exp" value=0 max="10" min="0"></meter>
     <table border="1">
         <thead>
             <th>No</th><th>仕事内容</th><th>担当</th><th>完了</th>
