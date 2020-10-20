@@ -6,9 +6,10 @@
     <title>Todoアプリ</title>
     <script>
 
-        let cards = [
-            {no:1,content:"テストタスク",person:"山田"},
-            {no:2,content:"テストタスク2",person:"佐藤"},
+let cards = [
+            {no:1,title:"テストタスク",content:"タスクの詳細",person:"山田"},
+            {no:2,title:"テストタスク2",content:"タスクの詳細",person:"佐藤"},
+            {no:3,title:"テストタスク3",content:"タスクの詳細",person:"田中"},
         ];
 
         function init() {
@@ -46,7 +47,7 @@
     <div>終わらせた回数：<strong id=DoneCount>0</strong>回</div>
     <table border="1">
         <thead>
-            <th>No</th><th>仕事内容</th><th>担当</th><th>完了</th>
+            <th>No</th><th>仕事タイトル</th><th>仕事内容</th><th>担当</th><th>完了</th>
         </thead>
         <tbody id="cardtable">
 
