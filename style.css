@@ -7,6 +7,47 @@
 .header{
     background-color: var(--primary-color);
 }
+.card-border{
+    border-width: 10px;
+    font-size: large;
+
+}
+
+.board-imagetile{
+    background-image: url('watermark.jpg');
+}
+
+@keyframes test{
+    0% {
+        opacity: 0%;
+        transform: translate3d(0,0,0);
+    }
+    50% {
+        opacity: 100%;
+        transform: translate3d(0,-20px,0);
+    }
+    70% {
+        opacity: 100%;
+        transform: translate3d(0,0,0);
+    }
+    100% {
+        opacity: 0%;
+        transform: translate3d(0,0,0);
+    }
+}
+.total-money{
+    font-size: x-large;
+}
+
+.moneyup {
+    color: red;
+    font-size: x-large;
+    display: inline-block;
+    animation-name: test;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+}
 
 /* body {
     background-color: var(--thard-color);

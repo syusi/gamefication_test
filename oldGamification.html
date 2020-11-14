@@ -9,31 +9,22 @@
     <link rel="stylesheet" href="style.css">
     <script>
 
-        let levels = {easy:10,normal:20,hard:50};
-        let colors = {easy:'primary',normal:'success',hard:'danger'};
         let cards = [
-            {no:1,title:"テストタスク",content:"タスクの詳細",person:"山田",level:"easy"},
-            {no:2,title:"テストタスク2",content:"タスクの詳細",person:"佐藤",level:"normal"},
-            {no:3,title:"テストタスク3",content:"タスクの詳細",person:"田中",level:"hard"},
+            {no:1,title:"テストタスク",content:"タスクの詳細",person:"山田"},
+            {no:2,title:"テストタスク2",content:"タスクの詳細",person:"佐藤"},
+            {no:3,title:"テストタスク3",content:"タスクの詳細",person:"田中"},
         ];
 
         function init() {
             let carddeck = document.getElementById("card-deck");
             
+            
             cards.forEach(card => {
                 let carddiv = document.createElement("div");
-                cardclassstring = colors[card['level']];
-                carddiv.setAttribute("class","card text-left card-border font-weight-bold border-"+cardclassstring);
+                carddiv.setAttribute("class","card border-primary");
                 carddeck.appendChild(carddiv);
-
-                let cardimage = document.createElement("img");
-                cardimage.setAttribute("class","card-img");
-                cardimage.setAttribute("src","card.png");
-                carddiv.appendChild(cardimage);
-
-
                 let cardbody = document.createElement("div");
-                cardbody.setAttribute("class","card-body card-img-overlay");
+                cardbody.setAttribute("class","card-body");
                 carddiv.appendChild(cardbody);
 
                 let title = document.createElement("h5");
@@ -43,13 +34,12 @@
 
                 let c_text = document.createElement("p");
                 c_text.setAttribute("class","card-text");
-                c_text.innerText = card["content"]+"\n担当者："+card["person"]+"\n"
-                c_text.innerHTML += '<span class="text-'+cardclassstring+'">難易度：'+card["level"]+'</span>';
+                c_text.innerText = card["content"]+"\n担当者："+card["person"];
                 cardbody.appendChild(c_text);
 
                 let donebutton = document.createElement("button");
                 donebutton.textContent = "完了"
-                donebutton.setAttribute("onclick","countUp("+ levels[card["level"]] +")");
+                donebutton.setAttribute("onclick","countUp()");
                 donebutton.setAttribute("class","btn btn-primary");
                 cardbody.appendChild(donebutton);
 
@@ -58,15 +48,13 @@
         window.onload = init;
 
         let level = 1;
-        let totalmoney = 0;
-        function countUp(taskmoney) {
+        function countUp() {
             let expMater = document.getElementById("exp");
             let now = Number(expMater.getAttribute("aria-valuenow"));
             let max = Number(expMater.getAttribute("aria-valuemax"));
             now += 1;
 
             if(now >= max){
-                document.getElementById("levelupAudio").play();
                 max += 10;
                 now = 0;
 
@@ -83,31 +71,6 @@
             expMater.setAttribute("style","width:"+proggress)
             expMater.innerText = proggress;
 
-            totalmoney += taskmoney
-            up = document.getElementById("moneyup");
-
-            //audio
-            moneyaudio = document.getElementById("moneyaudio");
-            moneyaudio.pause();
-            moneyaudio.currentTime = 0;
-            moneyaudio.play();
-            
-            // animation
-            up.classList.remove('moneyup');
-            // instead of up.offsetWidth = up.offsetWidth
-            //don't work this line. but i have no idea
-            void up.offsetWidth;
-            up.classList.add('moneyup');
-            up.innerText = '+' + taskmoney + '↑'
-
-            // up.addEventListener('animationend',()=>{
-            //   up.classList.remove('moneyup');
-            // },false);
-
-            total = document.getElementById("totalmoney");
-            total.innerText = totalmoney+'マネー'
-
-
         }
         
     </script>
@@ -115,7 +78,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </head>
-<body class="board-imagetile">
+<body>
     <div class="container-fluid">
         <!-- ヘッダーバー -->
         <nav class="navbar navbar-dark bg-dark">
@@ -158,25 +121,13 @@
         </div>
         <!-- それ以外 -->
         <h2 id="level">LV：1</h2>
-        <div class="row">
-          <div class="col-6">
-            <h2>経験値</h2>
-            <div class="progress" style="height: 30px;">
-                <div class="progress-bar" id="exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10" style="width:0%">0%</div>
-            </div>
-          </div>
-          <div class="col-6">
-            <h2>マネー</h2>
-            <div>
-              <span class="total-money" id="totalmoney">0マネー</span><span id="moneyup"></span>
-            </div>
-          </div>
+        <h2>経験値</h2>
+        <div class="progress" style="height: 30px;">
+            <div class="progress-bar" id="exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10" style="width:0%">0%</div>
         </div>
         <div class="card-deck py-5" id="card-deck">
         
         </div>
     </div>
-    <audio preload id="moneyaudio" src="amount-display1.mp3">お金の音</audio>
-    <audio preload id="levelupAudio" src="decision4.mp3">レベルアップの音</audio>
 </body>
 </html>
