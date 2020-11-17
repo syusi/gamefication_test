@@ -10,11 +10,15 @@
 .card-border{
     border-width: 10px;
     font-size: large;
+    background-image: url('./material/card.png');
 
+}
+.card-image-fit{
+    height: 250px;
 }
 
 .board-imagetile{
-    background-image: url('watermark.jpg');
+    background-image: url('./material/watermark.jpg');
 }
 
 @keyframes test{
@@ -37,16 +41,22 @@
 }
 .total-money{
     font-size: x-large;
+    color: gold;
 }
 
 .moneyup {
-    color: red;
+    color:gold;
     font-size: x-large;
     display: inline-block;
     animation-name: test;
     animation-duration: 1s;
     animation-timing-function: ease;
     animation-fill-mode: forwards;
+}
+.makeform{
+    color: rgb(253, 5, 5);
+    font-size: x-large;
+    font-weight: bold;
 }
 
 /* body {
