@@ -11,6 +11,7 @@
 
         
     <script src="gamification.js"></script>
+    <script src="websock.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
@@ -58,13 +59,16 @@
         </div>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="mytask-tab" data-toggle="tab" href="#mytask" role="tab" aria-controls="home" aria-selected="true">自分のタスク</a>
+            <a class="nav-link active" id="mytask-tab" data-toggle="tab" href="#mytask" role="tab" aria-selected="true">自分のタスク</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="othertask-tab" data-toggle="tab" href="#othertask" role="tab" aria-controls="profile" aria-selected="false">他の人のタスク</a>
+            <a class="nav-link" id="othertask-tab" data-toggle="tab" href="#othertask" role="tab" aria-selected="false">他の人のタスク</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="maketask-tab" data-toggle="tab" href="#maketask" role="tab" aria-controls="contact" aria-selected="false">タスクの作成</a>
+            <a class="nav-link" id="maketask-tab" data-toggle="tab" href="#maketask" role="tab" aria-selected="false">タスクの作成</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="maketask-tab" data-toggle="tab" href="#exprank" role="tab"aria-selected="false">経験値ランキング</a>
           </li>
         </ul>
         <!-- それ以外 -->
@@ -90,7 +94,7 @@
             </div>
           </div>
           <div id="othertask" class="tab-pane fade">
-            <div class="card-deck py-5" id="card-deck">
+            <div class="card-deck py-5" id="other-card-deck">
             
             </div>
           </div>
@@ -112,8 +116,10 @@
                   <option value="hard">hard</option>
                 </select>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="button" class="btn btn-primary" onclick="makeTask()">作成</button>
             </form>
+          </div>
+          <div id="exprank" class="tab-pane fade">
           </div>
         </div>
     </div>

@@ -1,14 +1,21 @@
 
-
+let holdernumber = 0;
 let levels = {easy:10,normal:20,hard:50};
 let colors = {easy:'primary',normal:'success',hard:'danger'};
-let cards = [
-    {no:1,title:"テストタスク",content:"タスクの詳細",person:"自分",level:"easy"},
-    {no:2,title:"テストタスク2",content:"タスクの詳細",person:"自分",level:"normal"},
-    {no:3,title:"テストタスク3",content:"タスクの詳細",person:"自分",level:"hard"},
-];
+let cards = [];
+let selfName = "自分";
 
 function init() {
+
+    var cookies = document.cookie;
+    selfName = cookies.split("=")[1].replace(";","");
+
+    cards = [
+        {no:1,title:"テストタスク",content:"タスクの詳細",person:selfName,level:"easy"},
+        {no:2,title:"テストタスク2",content:"タスクの詳細",person:selfName,level:"normal"},
+        {no:3,title:"テストタスク3",content:"タスクの詳細",person:selfName,level:"hard"}
+    ];
+
     let carddeck = document.getElementById("card-deck");
     
     cards.forEach(card => {
@@ -20,7 +27,34 @@ function init() {
 }
 
 function makeTask() {
-    nametag = document.getElementById("")
+    let nametag = document.getElementById("tasktitle");
+    let detailtag = document.getElementById("taskdetail");
+    let difftag = document.getElementById("taskdiffculty");
+
+    let newcard = {
+        no:cards.length+1,
+        title:nametag.value,
+        content:detailtag.value,
+        person:selfName,
+        level:difftag.value,
+    };
+
+    if (cards.length % 3 == 0) {
+        holderdiv = document.getElementById("mytask");
+        newholder = document.createElement("div");
+        newholder.setAttribute("class","card-deck py-5");
+        holdernumber += 1;
+        newholder.setAttribute("id","card-deck"+holdernumber);
+        holderdiv.appendChild(newholder);
+    }
+
+    nametag.value = "";
+    detailtag.value = "";
+    difftag.value = "easy";
+
+    cards.push(newcard);
+    makeCard(document.getElementById("card-deck"+holdernumber),newcard);
+
 }
 
 
@@ -60,9 +94,44 @@ function makeCard(parentElem,cardObj) {
 
     let taskbutton = document.createElement("button");
     taskbutton.textContent = "依頼"
-    taskbutton.setAttribute("onclick","countUp("+ cardObj["no"] +")");
+    taskbutton.setAttribute("onclick","sendtask("+ cardObj["no"] +")");
     taskbutton.setAttribute("class","btn btn-danger card-link");
-    cardbody.appendChild(taskbutton);
+    cardbody.appendChild(taskbutton);    
+}
+
+function makePublicCard(parentElem,cardObj) {
+    let carddiv = document.createElement("div");
+    cardclassstring = colors[cardObj['level']];
+    carddiv.setAttribute("class","card text-left card-border font-weight-bold border-"+cardclassstring);
+    parentElem.appendChild(carddiv);
+
+    let cardimage = document.createElement("img");
+    cardimage.setAttribute("class","card-img card-image-fit");
+    cardimage.setAttribute("src","./material/card.png");
+    carddiv.appendChild(cardimage);
+
+
+    let cardbody = document.createElement("div");
+    // cardbody.setAttribute("class","card-body card-img-overlay");
+    cardbody.setAttribute("class","card-img-overlay");
+    carddiv.appendChild(cardbody);
+
+    let title = document.createElement("h5");
+    title.setAttribute("class","card-title");
+    title.innerText = cardObj["title"];
+    cardbody.appendChild(title);
+
+    let c_text = document.createElement("p");
+    c_text.setAttribute("class","card-text");
+    c_text.innerText = cardObj["content"]+"\n担当者："+cardObj["person"]+"\n"
+    c_text.innerHTML += '<span class="text-'+cardclassstring+'">難易度：'+cardObj["level"]+'</span>';
+    cardbody.appendChild(c_text);
+
+    let donebutton = document.createElement("button");
+    donebutton.textContent = "完了"
+    donebutton.setAttribute("onclick","sendFinish("+ cardObj["no"] +")");
+    donebutton.setAttribute("class","btn btn-primary card-link");
+    cardbody.appendChild(donebutton);
 
 }
 window.onload = init;
@@ -70,6 +139,10 @@ window.onload = init;
 let level = 1;
 let totalmoney = 0;
 function countUp(taskmoney) {
+    getExp();
+    moneyup(taskmoney);
+}
+function getExp() {
     let expMater = document.getElementById("exp");
     let now = Number(expMater.getAttribute("aria-valuenow"));
     let max = Number(expMater.getAttribute("aria-valuemax"));
@@ -92,7 +165,8 @@ function countUp(taskmoney) {
     expMater.setAttribute("aria-valuemax",max);
     expMater.setAttribute("style","width:"+proggress)
     expMater.innerText = proggress;
-
+}
+function moneyup(taskmoney) {
     totalmoney += taskmoney
     up = document.getElementById("moneyup");
 
