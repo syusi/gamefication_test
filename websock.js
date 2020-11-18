@@ -58,11 +58,12 @@ function sendtask(no) {
 };
 function sendFinish(no) {
     
-    getExp();
-
     const card = publicCards.find((card) => {
         return (card.no === no);
     });
+
+    getExp();
+    moneyup((levels[card.level]/2));
 
     socket.send(JSON.stringify(
         {

@@ -22,6 +22,8 @@ function init() {
         makeCard(carddeck,card);
     });
 
+    sendLevel();
+
     document.getElementById("levelupAudio").volume = 0.1;
     document.getElementById("moneyaudio").volume = 0.1;
 }
@@ -158,6 +160,7 @@ function getExp() {
         //document.getElementById("level-content").setAttribute("class","modal-body");
         document.getElementById("level").innerText = "LV："+level;
         $('#modal1').modal('show');
+        sendLevel();
     }
     let proggress = parseInt((now/max)*100,10) + "%";
 
@@ -190,4 +193,32 @@ function moneyup(taskmoney) {
 
     total = document.getElementById("totalmoney");
     total.innerText = totalmoney+'マネー'
+}
+function renderRank() {
+    let rank = 1;
+    
+    publicUser.sort((a,b) =>{
+        if (a.level > b.level) return -1;
+        if (a.level > b.level) return 1;
+        return 0;
+    });
+
+    rankDiv = document.getElementById("exprank");
+    rankDiv.textContent = null;
+    
+    publicUser.forEach((user) => {
+        tag = document.createElement("div");
+        if (rank == 1) {
+            tag.setAttribute("class","gold");
+        }else if (rank == 2) {
+            tag.setAttribute("class","silver");
+        }else if (rank == 3){
+            tag.setAttribute("class","blonze");
+        }else {
+            tag.setAttribute("class","otherrank");
+        }
+        tag.innerText = rank+"位 Level"+user.level+"："+user.user;
+        rankDiv.appendChild(tag);
+        rank += 1;
+    });
 }

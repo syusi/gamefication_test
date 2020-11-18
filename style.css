@@ -58,6 +58,26 @@
     font-size: x-large;
     font-weight: bold;
 }
+.gold{
+    color: gold;
+    font-size: xx-large;
+    font-weight: bold;
+}
+.silver{
+    color:silver;
+    font-size: xx-large;
+    font-weight: bold;
+}
+.blonze{
+    color: rgb(50, 255, 9);
+    font-size: xx-large;
+    font-weight: bold;
+}
+.otherrank{
+    font-size:xx-large;
+    font-weight: bold;
+}
+
 
 /* body {
     background-color: var(--thard-color);

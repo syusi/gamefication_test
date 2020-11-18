@@ -45,12 +45,6 @@ type Task struct{
 	Status bool `json:status`
 }
 
-var userclients = make(map[*websocket.Conn]bool)
-type User struct{
-	User string `json:string`
-	Level int `json:int`
-}
-
 func HandleClients(w http.ResponseWriter, r *http.Request)  {
 	//ごルーチンで起動
 	go broadcastMessagesToClients()
@@ -165,6 +159,88 @@ func broadcastTaskToClients()  {
 	}
 }
 
+var userclients = make(map[*websocket.Conn]bool)
+type User struct{
+	User string `json:string`
+	Level int `json:int`
+}
+var publicUsers = make(map[int]User)
+var broadcastUser = make(chan User)
+var Usernumber = 0
+
+func UserPubliser(w http.ResponseWriter, r *http.Request)  {
+	//ごルーチンで起動
+	go broadcastUserToClients()
+
+	//状態更新
+	websocket, err := upgrader.Upgrade(w,r,nil)
+	fmt.Println("upgrade")
+	if err != nil {
+		log.Fatal("error upgrading Get request to a websocket::",err)
+	}
+
+	defer websocket.Close()
+
+	userclients[websocket] = true
+
+	for user := range publicUsers{
+		fmt.Println(publicUsers[user])
+		websocket.WriteJSON(publicUsers[user])
+	}
+
+	for {
+		var user User
+
+		err:= websocket.ReadJSON(&user)
+		fmt.Println("getmessage",user)
+
+		if err != nil {
+			log.Printf("error occurred while reading message: %v", err)
+            delete(userclients, websocket)
+            break
+		}
+
+		firstflug := true
+		for no := range publicUsers{
+			if publicUsers[no].User == user.User{
+				u,ok := publicUsers[no]
+				if ok {
+					u.Level = user.Level
+				}
+				publicUsers[no] = u
+				firstflug = false
+				break
+			}
+		}
+		if firstflug {
+			publicUsers[Usernumber] = user
+			Usernumber += 1
+		}
+
+		// メッセージ受け取り
+		fmt.Println("push message")
+		broadcastUser <- user
+	}
+}
+func broadcastUserToClients()  {
+	for {
+		//メッセージ受け取り
+		user := <- broadcastUser
+		//クライアント数だけループ
+		for client :=  range userclients{
+			fmt.Println("write task")
+			err := client.WriteJSON(user)
+
+			if err != nil {
+				log.Printf("error occurred while writing message to client: %v",err)
+				client.Close()
+				delete(userclients,client)
+			}
+		}
+	}
+}
+
+
 // func viewHandler(w http.ResponseWriter, r *http.Request){
 // 	page := Page{"Hell wild.",1}
 // 	tmpl, err := template.ParseFiles("../gamification/Gamification.html")
@@ -197,6 +273,7 @@ func main(){
 	http.HandleFunc("/setcookie",setCookies)
 	http.HandleFunc("/chat",HandleClients)
 	http.HandleFunc("/task",TaskPubliser)
+	http.HandleFunc("/user",UserPubliser)
 	fmt.Printf("Server running\n")
 	err := http.ListenAndServe(":8080",nil)
 	if err != nil {
