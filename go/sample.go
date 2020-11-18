@@ -102,7 +102,7 @@ func main(){
 
 	http.HandleFunc("/chat",HandleClients)
 	fmt.Printf("Server running\n")
-	err := http.ListenAndServe("8080",nil)
+	err := http.ListenAndServe(":8080",nil)
 	if err != nil {
 		log.Fatal("error starting http server::", err)
         return
